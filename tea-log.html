@@ -357,13 +357,24 @@
           ${r.grams ? spec('茶葉', r.grams + ' g') : ''}
           ${r.water ? spec('湯量', r.water + ' ml') : ''}
           ${r.temp  ? spec('温度', r.temp  + ' ℃') : ''}
-          ${r.time  ? spec('時間', r.time  + ' 秒') : ''}
+          ${r.time ? spec('時間', formatTime(r.time)) : ''}
         </div>
         ${r.memo ? `<div class="card-memo">${escape(r.memo)}</div>` : ''}
       </div>
     `).join('');
   }
-
+  
+  function formatTime(val) {
+  if (val.includes(':')) {
+    const parts = val.split(':');
+    const m = parseInt(parts[0]);
+    const s = parseInt(parts[1]);
+    if (m === 0) return s + ' 秒';
+    return m + ' 分 ' + s + ' 秒';
+  }
+  return val + ' 秒';  // 古いデータは秒そのまま表示
+  }
+  
   function spec(label, value) {
     return `<div class="spec">
       <span class="spec-label">${label}</span>
